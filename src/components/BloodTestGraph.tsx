@@ -45,11 +45,16 @@ const BloodTestGraph: React.FC<BloodTestGraphProps> = ({
           <p className="font-bold">{testName}</p>
           <p>{`Date: ${format(new Date(data.date), "dd/MM/yyyy")}`}</p>
           <p>{`Result: ${data.result}`}</p>
+          {minRange !== null && maxRange !== null && (
+            <p>{`Normal Range: ${minRange} - ${maxRange}`}</p>
+          )}
         </div>
       );
     }
     return null;
   };
+
+  const minReferenceLineColor = testName === "HDL Cholesterol" ? "red" : "green";
 
   return (
     <Card className="w-full">
@@ -79,12 +84,12 @@ const BloodTestGraph: React.FC<BloodTestGraphProps> = ({
               {minRange !== null && (
                 <ReferenceLine
                   y={minRange}
-                  stroke="green"
+                  stroke={minReferenceLineColor}
                   strokeDasharray="3 3"
                   label={{
                     value: `Min: ${minRange}`,
                     position: "insideBottomLeft",
-                    fill: "green",
+                    fill: minReferenceLineColor,
                   }}
                 />
               )}
@@ -100,12 +105,14 @@ const BloodTestGraph: React.FC<BloodTestGraphProps> = ({
                   }}
                 />
               )}
-              <Area
-                type="monotone"
-                dataKey="result"
-                fill="rgba(0, 128, 128, 0.1)"
-                strokeWidth={0}
-              />
+              {minRange !== null && maxRange !== null && (
+                <Area
+                  type="monotone"
+                  dataKey="result"
+                  fill="rgba(144, 238, 144, 0.3)"
+                  strokeWidth={0}
+                />
+              )}
               <Line type="monotone" dataKey="result" stroke="#008080" />
             </ComposedChart>
           </ResponsiveContainer>
@@ -116,11 +123,14 @@ const BloodTestGraph: React.FC<BloodTestGraphProps> = ({
             </p>
           </div>
         )}
+        {minRange !== null && maxRange !== null && (
+          <p className="text-sm text-muted-foreground">
+            Normal Range: {minRange} - {maxRange}
+          </p>
+        )}
       </CardContent>
     </Card>
   );
 };
 
 export default BloodTestGraph;
-
-    
