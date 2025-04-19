@@ -169,7 +169,7 @@ export default function Home() {
           
             <SidebarGroup>
               <SidebarMenuItem className="ml-2">
-                <SidebarMenuButton onClick={handleDataManagementClick} variant="ghost" className="font-fontMenu text-base text-foreground font-extrabold">
+                <SidebarMenuButton onClick={handleDataManagementClick} variant="ghost" className="font-bold text-base text-foreground font-extrabold">
                   Data Management
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -192,7 +192,7 @@ export default function Home() {
                           <SidebarMenuButton
                             onClick={() => handleTestSelect(test)}
                             variant="ghost"
-                            className="font-fontMenu text-base text-foreground font-extrabold"
+                            className="font-bold text-base text-foreground font-extrabold"
                           >
                             {test}
                           </SidebarMenuButton>
@@ -215,6 +215,7 @@ export default function Home() {
     </SidebarProvider>
   );
 }
+
 
 
 
