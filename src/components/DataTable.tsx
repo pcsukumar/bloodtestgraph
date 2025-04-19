@@ -13,77 +13,79 @@ import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { Edit, Trash } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { bloodTestRanges } from "@/lib/constants";
 
 interface DataTableProps {
   data: { Test: string; Date: string; Result: number }[];
   onDataUpdate: (data: any) => void;
 }
 
-const unitMap: { [key: string]: string } = {
-  "HbA1c": "mmol/mol",
-  "Total Cholesterol": "mmol/L",
-  "HDL Cholesterol": "mmol/L",
-  "Non-HDL Cholesterol": "mmol/L",
-  "LDL Cholesterol": "mmol/L",
-  "Total Cholesterol:HDL Ratio": "(none)",
-  "Triglyceride": "mmol/L",
-  "Urea": "mmol/L",
-  "Sodium": "mmol/L",
-  "Potassium": "mmol/L",
-  "Creatinine": "µmol/L",
-  "Albumin": "g/L",
-  "eGFR": "mL/min/1.73m²",
-  "Urinary Creatinine": "mg/dL",
-  "Microalbumin": "mg/L",
-  "Microalbumin Creatinine Ratio": "mg/g",
-  "Total Protein": "g/L",
-  "Total Bilirubin": "µmol/L",
-  "Alkaline Phosphatase": "IU/L",
-  "Gamma GT": "IU/L",
-  "AST": "IU/L",
-  "Alanine Transaminase": "IU/L",
-  "Urate": "µmol/L",
-};
+type EditedDataType = { Test: string; Date: string; Result: number } | null;
 
 const DataTable: React.FC<DataTableProps> = ({ data, onDataUpdate }) => {
-    const [editingRow, setEditingRow] = useState<number | null>(null);
-    const [editedData, setEditedData] = useState<{ Test: string; Date: string; Result: number } | null>(null);
+  const [editingRow, setEditingRow] = useState<number | null>(null);
+  const [editedData, setEditedData] = useState<EditedDataType>(null);
+  const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
-    const handleEdit = (index: number, row: { Test: string; Date: string; Result: number }) => {
-        setEditingRow(index);
-        setEditedData({ ...row });
-    };
+  const handleEdit = (index: number, row: { Test: string; Date: string; Result: number }) => {
+    setEditingRow(index);
+    setEditedData({ ...row });
+  };
 
-    const handleSave = (index: number) => {
-        if (!editedData) return;
+  const handleSave = (index: number) => {
+    if (!editedData) return;
 
-        const newData = [...data];
-        newData[index] = editedData;
-        onDataUpdate(newData);
-        setEditingRow(null);
-        setEditedData(null);
-    };
+    const newData = [...data];
+    newData[index] = editedData;
+    onDataUpdate(newData);
+    setEditingRow(null);
+    setEditedData(null);
+  };
 
-    const handleDelete = (index: number) => {
-        const newData = [...data];
-        newData.splice(index, 1);
-        onDataUpdate(newData);
-        setEditingRow(null);
-        setEditedData(null);
-    };
+  const handleDelete = (index: number) => {
+    const newData = [...data];
+    newData.splice(index, 1);
+    onDataUpdate(newData);
+    setEditingRow(null);
+    setEditedData(null);
+  };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
-        if (editedData) {
-            setEditedData({ ...editedData, [field]: e.target.value });
-        }
-    };
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
+    if (editedData) {
+      setEditedData({ ...editedData, [field]: e.target.value });
+    }
+  };
 
+  const toggleSelectRow = (index: number) => {
+    if (selectedRows.includes(index)) {
+      setSelectedRows(selectedRows.filter((rowIndex) => rowIndex !== index));
+    } else {
+      setSelectedRows([...selectedRows, index]);
+    }
+  };
+
+  const handleDeleteSelected = () => {
+    const newData = data.filter((_, index) => !selectedRows.includes(index));
+    onDataUpdate(newData);
+    setSelectedRows([]);
+  };
+
+  const isRowSelected = (index: number) => selectedRows.includes(index);
 
   return (
     <div className="w-full overflow-auto">
+      {selectedRows.length > 0 && (
+        <Button variant="destructive" onClick={handleDeleteSelected} className="mb-4">
+          Delete Selected ({selectedRows.length})
+        </Button>
+      )}
       <Table>
         <TableHeader>
           <TableRow>
+            <TableHead className="w-[50px]">
+              <span className="sr-only">Select</span>
+            </TableHead>
             <TableHead className="w-[100px]">Test</TableHead>
             <TableHead>Date</TableHead>
             <TableHead>Result</TableHead>
@@ -93,10 +95,17 @@ const DataTable: React.FC<DataTableProps> = ({ data, onDataUpdate }) => {
         </TableHeader>
         <TableBody>
           {data.map((row, index) => {
-            const unit = unitMap[row.Test] || "N/A";
+            const testRange = bloodTestRanges.find((range) => range.test === row.Test);
+            const unit = testRange ? testRange.unit : "N/A";
 
             return (
               <TableRow key={index}>
+                <TableCell className="p-0">
+                  <Checkbox
+                    checked={isRowSelected(index)}
+                    onCheckedChange={() => toggleSelectRow(index)}
+                  />
+                </TableCell>
                 <TableCell className="font-medium">
                   {editingRow === index ? (
                     <Input
@@ -159,7 +168,7 @@ const DataTable: React.FC<DataTableProps> = ({ data, onDataUpdate }) => {
           })}
           {data.length === 0 && (
             <TableRow>
-              <TableCell colSpan={5} className="text-center">
+              <TableCell colSpan={6} className="text-center">
                 No data available. Please upload a CSV file.
               </TableCell>
             </TableRow>
@@ -171,3 +180,5 @@ const DataTable: React.FC<DataTableProps> = ({ data, onDataUpdate }) => {
 };
 
 export default DataTable;
+
+    
