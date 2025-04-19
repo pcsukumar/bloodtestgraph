@@ -4,6 +4,8 @@ import React, { useState, useCallback } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
+import { bloodTestRanges } from "@/lib/constants";
+import DataTable from "@/components/DataTable";
 
 interface CSVUploaderProps {
   onDataUpdate: (data: any) => void;
@@ -160,6 +162,7 @@ const CSVUploader: React.FC<CSVUploaderProps> = ({ onDataUpdate }) => {
           </span>
         </Button>
       </label>
+      {/*  */}
     </div>
   );
 };

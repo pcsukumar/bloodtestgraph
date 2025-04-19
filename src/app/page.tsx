@@ -217,8 +217,3 @@ export default function Home() {
     </SidebarProvider>
   );
 }
-
-
-
-
-

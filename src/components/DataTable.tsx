@@ -14,10 +14,9 @@ import { format } from "date-fns";
 
 interface DataTableProps {
   data: { Test: string; Date: string; Result: number }[];
-  testRanges: any[];
 }
 
-const DataTable: React.FC<DataTableProps> = ({ data, testRanges }) => {
+const DataTable: React.FC<DataTableProps> = ({ data }) => {
   return (
     <div className="w-full overflow-auto">
       <Table>
@@ -31,8 +30,9 @@ const DataTable: React.FC<DataTableProps> = ({ data, testRanges }) => {
         </TableHeader>
         <TableBody>
           {data.map((row, index) => {
-            const testRange = testRanges.find((range) => range.test === row.Test);
-            const unit = testRange ? testRange.unit : "N/A";
+            //const testRange = testRanges.find((range) => range.test === row.Test);
+            //const unit = testRange ? testRange.unit : "N/A";
+            const unit = "N/A";
 
             return (
               <TableRow key={index}>
