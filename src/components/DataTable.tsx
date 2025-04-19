@@ -16,6 +16,32 @@ interface DataTableProps {
   data: { Test: string; Date: string; Result: number }[];
 }
 
+const unitMap: { [key: string]: string } = {
+  "HbA1c": "mmol/mol",
+  "Total Cholesterol": "mmol/L",
+  "HDL Cholesterol": "mmol/L",
+  "Non-HDL Cholesterol": "mmol/L",
+  "LDL Cholesterol": "mmol/L",
+  "Total Cholesterol:HDL Ratio": "",
+  "Triglyceride": "mmol/L",
+  "Urea": "mmol/L",
+  "Sodium": "mmol/L",
+  "Potassium": "mmol/L",
+  "Creatinine": "µmol/L",
+  "Albumin": "g/L",
+  "eGFR": "mL/min/1.73m²",
+  "Urinary Creatinine": "mg/dL",
+  "Microalbumin": "mg/L",
+  "Microalbumin Creatinine Ratio": "mg/g",
+  "Total Protein": "g/L",
+  "Total Bilirubin": "µmol/L",
+  "Alkaline Phosphatase": "IU/L",
+  "Gamma GT": "IU/L",
+  "AST": "IU/L",
+  "Alanine Transaminase": "IU/L",
+  "Urate": "µmol/L",
+};
+
 const DataTable: React.FC<DataTableProps> = ({ data }) => {
   return (
     <div className="w-full overflow-auto">
@@ -30,9 +56,7 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
         </TableHeader>
         <TableBody>
           {data.map((row, index) => {
-            //const testRange = testRanges.find((range) => range.test === row.Test);
-            //const unit = testRange ? testRange.unit : "N/A";
-            const unit = "N/A";
+            const unit = unitMap[row.Test] || "N/A";
 
             return (
               <TableRow key={index}>
