@@ -1,3 +1,173 @@
+"use client";
+
+import React, { useState } from "react";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInput,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarSeparator,
+} from "@/components/ui/sidebar";
+import BloodTestGraph from "@/components/BloodTestGraph";
+import CSVUploader from "@/components/CSVUploader";
+import DataTable from "@/components/DataTable";
+import { bloodTestRanges } from "@/lib/constants";
+import { PanelLeft, Upload } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import { Toaster } from "@/components/ui/toaster";
+
+const testCategories = [
+  {
+    category: "Glucose",
+    tests: ["HbA1c"],
+  },
+  {
+    category: "Lipid Profile",
+    tests: [
+      "Total Cholesterol",
+      "HDL Cholesterol",
+      "Non-HDL Cholesterol",
+      "LDL Cholesterol",
+      "Total Cholesterol:HDL Ratio",
+      "Triglyceride",
+    ],
+  },
+  {
+    category: "Kidney",
+    tests: [
+      "Urea",
+      "Sodium",
+      "Potassium",
+      "Creatinine",
+      "Albumin",
+      "eGFR",
+      "Urinary Creatinine",
+      "Microalbumin",
+      "Microalbumin Creatinine Ratio",
+    ],
+  },
+  {
+    category: "Liver",
+    tests: [
+      "Total Protein",
+      "Total Bilirubin",
+      "Alkaline Phosphatase",
+      "Gamma GT",
+      "AST",
+      "Alanine Transaminase",
+    ],
+  },
+  {
+    category: "Urate",
+    tests: ["Urate"],
+  },
+];
+
 export default function Home() {
-  return <></>;
+  const [selectedTest, setSelectedTest] = useState<string | null>(null);
+  const [csvData, setCsvData] = useState<
+    { Test: string; Date: string; Result: number }[]
+  >([]);
+  const [showCSVUploader, setShowCSVUploader] = useState(false);
+
+  const handleTestSelect = (test: string) => {
+    setSelectedTest(test);
+    setShowCSVUploader(false);
+  };
+
+  const handleDataManagementClick = () => {
+    setSelectedTest(null);
+    setShowCSVUploader(true);
+  };
+
+  const handleCSVDataUpdate = (data: any) => {
+    setCsvData(data);
+  };
+
+  const getTestRange = (testName: string) => {
+    return bloodTestRanges.find((test) => test.test === testName);
+  };
+
+  return (
+    <SidebarProvider>
+      <Toaster />
+      <Sidebar>
+        <SidebarHeader>
+          <SidebarInput placeholder="Search..." />
+        </SidebarHeader>
+        <SidebarContent>
+          <ScrollArea>
+            {testCategories.map((category) => (
+              <SidebarGroup key={category.category}>
+                <SidebarGroupLabel>{category.category}</SidebarGroupLabel>
+                <SidebarMenu>
+                  {category.tests.map((test) => (
+                    <SidebarMenuItem key={test}>
+                      <SidebarMenuButton onClick={() => handleTestSelect(test)}>
+                        {test}
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroup>
+            ))}
+            <SidebarSeparator />
+            <SidebarGroup>
+              <SidebarMenuItem>
+                <SidebarMenuButton onClick={handleDataManagementClick}>
+                  <Upload className="mr-2 h-4 w-4" />
+                  Data Management
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarGroup>
+          </ScrollArea>
+        </SidebarContent>
+        <SidebarFooter>
+          <p className="text-xs text-muted-foreground">
+            Bloodlines &copy; {new Date().getFullYear()}
+          </p>
+        </SidebarFooter>
+      </Sidebar>
+
+      <SidebarContent className="ml-[16rem] flex flex-col">
+        {showCSVUploader ? (
+          <Card className="w-full">
+            <CardHeader>
+              <CardTitle>Data Management</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-4">
+              <CSVUploader onDataUpdate={handleCSVDataUpdate} />
+              {csvData.length > 0 && (
+                <DataTable data={csvData} testRanges={bloodTestRanges} />
+              )}
+            </CardContent>
+          </Card>
+        ) : selectedTest ? (
+          <BloodTestGraph
+            testName={selectedTest}
+            testRange={getTestRange(selectedTest)}
+            csvData={csvData}
+          />
+        ) : (
+          <Card className="w-full">
+            <CardContent className="flex h-full items-center justify-center">
+              <p className="text-lg text-muted-foreground">
+                Select a test category or individual test from the sidebar to
+                view its graph.
+              </p>
+            </CardContent>
+          </Card>
+        )}
+      </SidebarContent>
+    </SidebarProvider>
+  );
 }
