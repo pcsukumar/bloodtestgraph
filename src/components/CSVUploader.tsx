@@ -38,6 +38,7 @@ const CSVUploader: React.FC<CSVUploaderProps> = ({ onDataUpdate, initialData = [
           // Combine initial data with newly parsed data
           const combinedData: { Test: string; Date: string; Result: number }[] = [];
           let hasDuplicates = false;
+          let newRecords = 0;
 
           for (const newItem of parsedData) {
             const isDuplicate = initialData.some(
@@ -48,6 +49,7 @@ const CSVUploader: React.FC<CSVUploaderProps> = ({ onDataUpdate, initialData = [
 
             if (!isDuplicate) {
               combinedData.push(newItem);
+              newRecords++;
             } else {
               hasDuplicates = true;
             }
@@ -68,7 +70,7 @@ const CSVUploader: React.FC<CSVUploaderProps> = ({ onDataUpdate, initialData = [
 
           toast({
             title: "Success",
-            description: "CSV data uploaded and parsed successfully!",
+            description: `CSV data uploaded and parsed successfully! ${newRecords} new records uploaded.`,
           });
         } catch (error: any) {
           console.error("CSV Parsing Error:", error.message);
