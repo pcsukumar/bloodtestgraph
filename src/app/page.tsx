@@ -116,6 +116,56 @@ export default function Home() {
     return cat ? cat.tests : [];
   };
 
+  const renderGraphs = () => {
+    if (showCSVUploader) {
+      return (
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle>Data Management</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col gap-4">
+            <CSVUploader onDataUpdate={handleCSVDataUpdate} />
+            {csvData.length > 0 && (
+              <DataTable data={csvData} testRanges={bloodTestRanges} />
+            )}
+          </CardContent>
+        </Card>
+      );
+    } else if (selectedTest) {
+      return (
+        <BloodTestGraph
+          testName={selectedTest}
+          testRange={getTestRange(selectedTest)}
+          csvData={csvData}
+        />
+      );
+    } else if (selectedCategory) {
+      return (
+        <div className="flex flex-col gap-4 w-full">
+          {getTestsInCategory(selectedCategory).map((test) => (
+            <BloodTestGraph
+              key={test}
+              testName={test}
+              testRange={getTestRange(test)}
+              csvData={csvData}
+            />
+          ))}
+        </div>
+      );
+    } else {
+      return (
+        <Card className="w-full">
+          <CardContent className="flex h-full items-center justify-center">
+            <p className="text-lg text-muted-foreground">
+              Select a test category or individual test from the sidebar to
+              view its graph.
+            </p>
+          </CardContent>
+        </Card>
+      );
+    }
+  };
+
   return (
     <SidebarProvider>
       <Toaster />
@@ -142,8 +192,7 @@ export default function Home() {
                           <SidebarMenuButton
                             onClick={() => handleTestSelect(test)}
                             variant="ghost"
-                            className="font-normal text-base text-foreground" // Added styles
-                            style={{ fontFamily: 'Roboto' }}
+                            className="font-semibold text-base text-foreground"
                           >
                             {test}
                           </SidebarMenuButton>
@@ -157,7 +206,7 @@ export default function Home() {
             <SidebarSeparator />
             <SidebarGroup>
               <SidebarMenuItem>
-                <SidebarMenuButton onClick={handleDataManagementClick} variant="ghost">
+                <SidebarMenuButton onClick={handleDataManagementClick} variant="ghost" className="font-semibold text-base text-foreground">
                   <Upload className="mr-2 h-4 w-4" />
                   Data Management
                 </SidebarMenuButton>
@@ -173,47 +222,8 @@ export default function Home() {
       </Sidebar>
 
       <SidebarContent className="flex flex-col">
-        {showCSVUploader ? (
-          <Card className="w-full">
-            <CardHeader>
-              <CardTitle>Data Management</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-4">
-              <CSVUploader onDataUpdate={handleCSVDataUpdate} />
-              {csvData.length > 0 && (
-                <DataTable data={csvData} testRanges={bloodTestRanges} />
-              )}
-            </CardContent>
-          </Card>
-        ) : selectedTest ? (
-          <BloodTestGraph
-            testName={selectedTest}
-            testRange={getTestRange(selectedTest)}
-            csvData={csvData}
-          />
-        ) : selectedCategory ? (
-          <div className="flex flex-col gap-4 w-full">
-            {getTestsInCategory(selectedCategory).map((test) => (
-              <BloodTestGraph
-                key={test}
-                testName={test}
-                testRange={getTestRange(test)}
-                csvData={csvData}
-              />
-            ))}
-          </div>
-        ) : (
-          <Card className="w-full">
-            <CardContent className="flex h-full items-center justify-center">
-              <p className="text-lg text-muted-foreground">
-                Select a test category or individual test from the sidebar to
-                view its graph.
-              </p>
-            </CardContent>
-          </Card>
-        )}
+        {renderGraphs()}
       </SidebarContent>
     </SidebarProvider>
   );
 }
-
