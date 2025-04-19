@@ -78,7 +78,7 @@ export default function Home() {
     { Test: string; Date: string; Result: number }[]
   >([]);
   const [showCSVUploader, setShowCSVUploader] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>("Glucose");
 
   const handleTestSelect = (test: string) => {
     setSelectedTest(test);
@@ -215,4 +215,3 @@ export default function Home() {
     </SidebarProvider>
   );
 }
-
