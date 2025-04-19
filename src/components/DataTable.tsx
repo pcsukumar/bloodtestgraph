@@ -1,19 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { format } from "date-fns";
+import { Button } from "@/components/ui/button";
+import { Edit, Trash } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 interface DataTableProps {
   data: { Test: string; Date: string; Result: number }[];
+  onDataUpdate: (data: any) => void;
 }
 
 const unitMap: { [key: string]: string } = {
@@ -22,7 +25,7 @@ const unitMap: { [key: string]: string } = {
   "HDL Cholesterol": "mmol/L",
   "Non-HDL Cholesterol": "mmol/L",
   "LDL Cholesterol": "mmol/L",
-  "Total Cholesterol:HDL Ratio": "",
+  "Total Cholesterol:HDL Ratio": "(none)",
   "Triglyceride": "mmol/L",
   "Urea": "mmol/L",
   "Sodium": "mmol/L",
@@ -42,7 +45,40 @@ const unitMap: { [key: string]: string } = {
   "Urate": "µmol/L",
 };
 
-const DataTable: React.FC<DataTableProps> = ({ data }) => {
+const DataTable: React.FC<DataTableProps> = ({ data, onDataUpdate }) => {
+    const [editingRow, setEditingRow] = useState<number | null>(null);
+    const [editedData, setEditedData] = useState<{ Test: string; Date: string; Result: number } | null>(null);
+
+    const handleEdit = (index: number, row: { Test: string; Date: string; Result: number }) => {
+        setEditingRow(index);
+        setEditedData({ ...row });
+    };
+
+    const handleSave = (index: number) => {
+        if (!editedData) return;
+
+        const newData = [...data];
+        newData[index] = editedData;
+        onDataUpdate(newData);
+        setEditingRow(null);
+        setEditedData(null);
+    };
+
+    const handleDelete = (index: number) => {
+        const newData = [...data];
+        newData.splice(index, 1);
+        onDataUpdate(newData);
+        setEditingRow(null);
+        setEditedData(null);
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: string) => {
+        if (editedData) {
+            setEditedData({ ...editedData, [field]: e.target.value });
+        }
+    };
+
+
   return (
     <div className="w-full overflow-auto">
       <Table>
@@ -52,6 +88,7 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
             <TableHead>Date</TableHead>
             <TableHead>Result</TableHead>
             <TableHead>Unit</TableHead>
+            <TableHead className="text-center">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -60,10 +97,63 @@ const DataTable: React.FC<DataTableProps> = ({ data }) => {
 
             return (
               <TableRow key={index}>
-                <TableCell className="font-medium">{row.Test}</TableCell>
-                <TableCell>{format(new Date(row.Date), "dd/MM/yyyy")}</TableCell>
-                <TableCell>{row.Result}</TableCell>
+                <TableCell className="font-medium">
+                  {editingRow === index ? (
+                    <Input
+                      type="text"
+                      value={editedData?.Test || ""}
+                      onChange={(e) => handleInputChange(e, "Test")}
+                    />
+                  ) : (
+                    row.Test
+                  )}
+                </TableCell>
+                <TableCell>
+                  {editingRow === index ? (
+                    <Input
+                      type="text"
+                      value={editedData?.Date ? format(new Date(editedData.Date), "dd/MM/yyyy") : ""}
+                      onChange={(e) => handleInputChange(e, "Date")}
+                    />
+                  ) : (
+                    format(new Date(row.Date), "dd/MM/yyyy")
+                  )}
+                </TableCell>
+                <TableCell>
+                  {editingRow === index ? (
+                    <Input
+                      type="text"
+                      value={editedData?.Result.toString() || ""}
+                      onChange={(e) => handleInputChange(e, "Result")}
+                    />
+                  ) : (
+                    row.Result
+                  )}
+                </TableCell>
                 <TableCell>{unit}</TableCell>
+                <TableCell className="flex justify-center gap-2">
+                  {editingRow === index ? (
+                    <>
+                      <Button size="sm" onClick={() => handleSave(index)}>
+                        Save
+                      </Button>
+                      <Button size="sm" variant="ghost" onClick={() => setEditingRow(null)}>
+                        Cancel
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button size="sm" onClick={() => handleEdit(index, row)}>
+                        <Edit className="h-4 w-4 mr-2" />
+                        Edit
+                      </Button>
+                      <Button size="sm" variant="destructive" onClick={() => handleDelete(index)}>
+                        <Trash className="h-4 w-4 mr-2" />
+                        Delete
+                      </Button>
+                    </>
+                  )}
+                </TableCell>
               </TableRow>
             );
           })}

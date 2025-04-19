@@ -4,16 +4,16 @@ import React, { useState, useCallback } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Upload } from "lucide-react";
-import { bloodTestRanges } from "@/lib/constants";
-import DataTable from "@/components/DataTable";
 
 interface CSVUploaderProps {
   onDataUpdate: (data: any) => void;
+  initialData?: { Test: string; Date: string; Result: number }[];
 }
 
-const CSVUploader: React.FC<CSVUploaderProps> = ({ onDataUpdate }) => {
+const CSVUploader: React.FC<CSVUploaderProps> = ({ onDataUpdate, initialData = [] }) => {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+    const [uploadedData, setUploadedData] = useState(initialData); // State to hold uploaded data
 
   const handleFileChange = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -34,8 +34,11 @@ const CSVUploader: React.FC<CSVUploaderProps> = ({ onDataUpdate }) => {
       reader.onload = async (e) => {
         const text = e.target?.result as string;
         try {
-          const data = await parseCSV(text);
-          onDataUpdate(data);
+          const parsedData = await parseCSV(text);
+            // Combine initial data with newly parsed data
+            const combinedData = [...initialData, ...parsedData];
+          onDataUpdate(combinedData);
+            setUploadedData(combinedData); // Update state with combined data
           toast({
             title: "Success",
             description: "CSV data uploaded and parsed successfully!",
@@ -61,7 +64,7 @@ const CSVUploader: React.FC<CSVUploaderProps> = ({ onDataUpdate }) => {
       };
       reader.readAsText(file);
     },
-    [onDataUpdate, toast]
+    [onDataUpdate, toast, initialData]
   );
 
   const parseCSV = async (text: string) => {
@@ -162,7 +165,6 @@ const CSVUploader: React.FC<CSVUploaderProps> = ({ onDataUpdate }) => {
           </span>
         </Button>
       </label>
-      {/*  */}
     </div>
   );
 };

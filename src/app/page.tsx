@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState } from "react";
@@ -16,7 +15,6 @@ import {
 import BloodTestGraph from "@/components/BloodTestGraph";
 import CSVUploader from "@/components/CSVUploader";
 import DataTable from "@/components/DataTable";
-import { bloodTestRanges } from "@/lib/constants";
 import { Upload } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -118,9 +116,9 @@ export default function Home() {
             <CardTitle>Data Management</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
-            <CSVUploader onDataUpdate={handleCSVDataUpdate} />
+            <CSVUploader onDataUpdate={handleCSVDataUpdate} initialData={csvData}/>
             {csvData.length > 0 && (
-              <DataTable data={csvData} />
+              <DataTable data={csvData} onDataUpdate={handleCSVDataUpdate} />
             )}
           </CardContent>
         </Card>
@@ -162,7 +160,7 @@ export default function Home() {
   return (
     <SidebarProvider>
       <Toaster />
-      <Sidebar>
+      <Sidebar className="w-60">
         <SidebarHeader>
         </SidebarHeader>
         <SidebarContent>
@@ -170,8 +168,8 @@ export default function Home() {
           
             <SidebarGroup>
               <SidebarMenu>
-                <SidebarMenuItem>
-                  <SidebarMenuButton onClick={handleDataManagementClick} variant="ghost" className="font-extrabold text-base text-foreground sidebar-menu-item">
+                <SidebarMenuItem className="hover:bg-secondary rounded-md">
+                  <SidebarMenuButton onClick={handleDataManagementClick} variant="ghost" className="font-semibold text-base text-foreground sidebar-menu-item">
                     Data Management
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -185,17 +183,17 @@ export default function Home() {
                 key={category.category}
               >
                 <AccordionItem value={category.category}>
-                  <AccordionTrigger onClick={() => handleCategorySelect(category.category)} className="font-extrabold sidebar-menu-item">
+                  <AccordionTrigger onClick={() => handleCategorySelect(category.category)} className="font-semibold sidebar-menu-item hover:bg-secondary rounded-md">
                     {category.category}
                   </AccordionTrigger>
                   <AccordionContent className="pl-4">
                     <SidebarMenu>
                       {category.tests.map((test) => (
-                        <SidebarMenuItem key={test} className="ml-2">
+                        <SidebarMenuItem key={test} className="ml-2 hover:bg-secondary rounded-md">
                           <SidebarMenuButton
                             onClick={() => handleTestSelect(test)}
                             variant="ghost"
-                            className="font-extrabold text-base text-foreground sidebar-menu-item"
+                            className="font-semibold text-base text-foreground sidebar-menu-item"
                           >
                             {test}
                           </SidebarMenuButton>
@@ -212,7 +210,7 @@ export default function Home() {
        
       </Sidebar>
 
-      <SidebarContent className="flex flex-col">
+      <SidebarContent className="flex flex-col pl-0">
         {renderGraphs()}
       </SidebarContent>
     </SidebarProvider>
