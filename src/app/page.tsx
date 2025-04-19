@@ -19,10 +19,9 @@ import BloodTestGraph from "@/components/BloodTestGraph";
 import CSVUploader from "@/components/CSVUploader";
 import DataTable from "@/components/DataTable";
 import { bloodTestRanges } from "@/lib/constants";
-import { PanelLeft, Upload } from "lucide-react";
+import { Upload } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
 import {
   Accordion,
@@ -138,6 +137,7 @@ export default function Home() {
                           <SidebarMenuButton
                             onClick={() => handleTestSelect(test)}
                             variant="ghost"
+                            className="font-normal text-base text-foreground" // Added styles
                           >
                             {test}
                           </SidebarMenuButton>
