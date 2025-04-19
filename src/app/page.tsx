@@ -140,9 +140,10 @@ export default function Home() {
         />
       );
     } else if (selectedCategory) {
+      const tests = getTestsInCategory(selectedCategory);
       return (
         <div className="flex flex-col gap-4 w-full">
-          {getTestsInCategory(selectedCategory).map((test) => (
+          {tests.map((test) => (
             <BloodTestGraph
               key={test}
               testName={test}
@@ -207,7 +208,6 @@ export default function Home() {
             <SidebarGroup>
               <SidebarMenuItem>
                 <SidebarMenuButton onClick={handleDataManagementClick} variant="ghost" className="font-semibold text-base text-foreground">
-                  <Upload className="mr-2 h-4 w-4" />
                   Data Management
                 </SidebarMenuButton>
               </SidebarMenuItem>
