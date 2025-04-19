@@ -130,7 +130,7 @@ export default function Home() {
                   <AccordionTrigger>
                     {category.category}
                   </AccordionTrigger>
-                  <AccordionContent>
+                  <AccordionContent className="pl-4">
                     <SidebarMenu>
                       {category.tests.map((test) => (
                         <SidebarMenuItem key={test}>
