@@ -168,11 +168,13 @@ export default function Home() {
           <ScrollArea>
           
             <SidebarGroup>
-              <SidebarMenuItem className="ml-2">
-                <SidebarMenuButton onClick={handleDataManagementClick} variant="ghost" className="font-bold text-base text-foreground font-extrabold">
-                  Data Management
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton onClick={handleDataManagementClick} variant="ghost" className="font-extrabold text-base text-foreground">
+                    Data Management
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
             </SidebarGroup>
             <SidebarSeparator />
             {testCategories.map((category) => (
@@ -192,7 +194,7 @@ export default function Home() {
                           <SidebarMenuButton
                             onClick={() => handleTestSelect(test)}
                             variant="ghost"
-                            className="font-bold text-base text-foreground font-extrabold"
+                            className="font-extrabold text-base text-foreground"
                           >
                             {test}
                           </SidebarMenuButton>
@@ -215,6 +217,7 @@ export default function Home() {
     </SidebarProvider>
   );
 }
+
 
 
 
