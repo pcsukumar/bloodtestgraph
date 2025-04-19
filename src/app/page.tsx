@@ -15,7 +15,6 @@ import {
 import BloodTestGraph from "@/components/BloodTestGraph";
 import CSVUploader from "@/components/CSVUploader";
 import DataTable from "@/components/DataTable";
-import { Upload } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Toaster } from "@/components/ui/toaster";
@@ -183,7 +182,7 @@ export default function Home() {
                 key={category.category}
               >
                 <AccordionItem value={category.category}>
-                  <AccordionTrigger onClick={() => handleCategorySelect(category.category)} className="font-semibold sidebar-menu-item hover:bg-secondary rounded-md">
+                  <AccordionTrigger onClick={() => handleCategorySelect(category.category)} className="font-semibold sidebar-menu-item hover:bg-secondary rounded-md pl-2">
                     {category.category}
                   </AccordionTrigger>
                   <AccordionContent className="pl-4">
