@@ -182,7 +182,7 @@ export default function Home() {
                 key={category.category}
               >
                 <AccordionItem value={category.category}>
-                  <AccordionTrigger onClick={() => handleCategorySelect(category.category)} className="font-semibold sidebar-menu-item hover:bg-secondary rounded-md pl-2">
+                  <AccordionTrigger onClick={() => handleCategorySelect(category.category)} className="font-semibold sidebar-menu-item hover:bg-secondary rounded-md pl-4">
                     {category.category}
                   </AccordionTrigger>
                   <AccordionContent className="pl-4">
@@ -215,3 +215,4 @@ export default function Home() {
     </SidebarProvider>
   );
 }
+
