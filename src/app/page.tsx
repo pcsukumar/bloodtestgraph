@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarGroup,
   SidebarHeader,
   SidebarMenu,
@@ -120,7 +119,7 @@ export default function Home() {
           <CardContent className="flex flex-col gap-4">
             <CSVUploader onDataUpdate={handleCSVDataUpdate} />
             {csvData.length > 0 && (
-              <DataTable data={csvData} testRanges={bloodTestRanges} />
+              <DataTable data={csvData} />
             )}
           </CardContent>
         </Card>
@@ -169,8 +168,8 @@ export default function Home() {
           <ScrollArea>
           
             <SidebarGroup>
-              <SidebarMenuItem>
-                <SidebarMenuButton onClick={handleDataManagementClick} variant="ghost" className="font-fontMenu text-base text-foreground font-semibold">
+              <SidebarMenuItem className="ml-2">
+                <SidebarMenuButton onClick={handleDataManagementClick} variant="ghost" className="font-fontMenu text-base text-foreground font-extrabold">
                   Data Management
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -183,17 +182,17 @@ export default function Home() {
                 key={category.category}
               >
                 <AccordionItem value={category.category}>
-                  <AccordionTrigger onClick={() => handleCategorySelect(category.category)}>
+                  <AccordionTrigger onClick={() => handleCategorySelect(category.category)} className="font-extrabold">
                     {category.category}
                   </AccordionTrigger>
                   <AccordionContent className="pl-4">
                     <SidebarMenu>
                       {category.tests.map((test) => (
-                        <SidebarMenuItem key={test}>
+                        <SidebarMenuItem key={test} className="ml-2">
                           <SidebarMenuButton
                             onClick={() => handleTestSelect(test)}
                             variant="ghost"
-                            className="font-fontMenu text-base text-foreground font-semibold"
+                            className="font-fontMenu text-base text-foreground font-extrabold"
                           >
                             {test}
                           </SidebarMenuButton>
@@ -207,11 +206,7 @@ export default function Home() {
            
           </ScrollArea>
         </SidebarContent>
-        <SidebarFooter>
-          <p className="text-xs text-muted-foreground">
-            Bloodlines &copy; {new Date().getFullYear()}
-          </p>
-        </SidebarFooter>
+       
       </Sidebar>
 
       <SidebarContent className="flex flex-col">
@@ -220,5 +215,6 @@ export default function Home() {
     </SidebarProvider>
   );
 }
+
 
 
