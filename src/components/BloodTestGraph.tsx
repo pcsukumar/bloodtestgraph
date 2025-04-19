@@ -62,6 +62,7 @@ const BloodTestGraph: React.FC<BloodTestGraphProps> = ({
                 angle={-30}
                 textAnchor="end"
                 height={80}
+                className="text-xs"
               />
               <YAxis
                 dataKey="result"
