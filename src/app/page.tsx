@@ -6,7 +6,6 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -226,3 +225,4 @@ export default function Home() {
     </SidebarProvider>
   );
 }
+
