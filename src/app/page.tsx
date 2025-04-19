@@ -143,6 +143,7 @@ export default function Home() {
                             onClick={() => handleTestSelect(test)}
                             variant="ghost"
                             className="font-normal text-base text-foreground" // Added styles
+                            style={{ fontFamily: 'Roboto' }}
                           >
                             {test}
                           </SidebarMenuButton>
