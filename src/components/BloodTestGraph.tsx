@@ -113,16 +113,16 @@ const BloodTestGraph: React.FC<BloodTestGraphProps> = ({
                     }}
                   />
                   <ReferenceArea
-                  y1={testRange.minimum}
-                  y2={testRange.maximum}
-                  stroke="rgba(0, 128, 128, 0.3)"
-                  strokeOpacity={0.3}
-                  label={{
-                    value: "Normal Range",
-                    position: "top",
-                    fill: "rgba(0, 0, 0, 0.5)",
-                  }}
-                />
+                    y1={testRange.minimum}
+                    y2={testRange.maximum}
+                    stroke="rgba(0, 128, 128, 0.3)"
+                    strokeOpacity={0.3}
+                    label={{
+                      value: "Normal Range",
+                      position: "inside",
+                      fill: "rgba(0, 0, 0, 0.5)",
+                    }}
+                  />
                 </>
               )}
               <Area
