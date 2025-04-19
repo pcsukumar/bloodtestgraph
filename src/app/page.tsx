@@ -83,15 +83,23 @@ export default function Home() {
     { Test: string; Date: string; Result: number }[]
   >([]);
   const [showCSVUploader, setShowCSVUploader] = useState(false);
-  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const handleTestSelect = (test: string) => {
     setSelectedTest(test);
+    setSelectedCategory(null);
+    setShowCSVUploader(false);
+  };
+
+  const handleCategorySelect = (category: string) => {
+    setSelectedCategory(category);
+    setSelectedTest(null);
     setShowCSVUploader(false);
   };
 
   const handleDataManagementClick = () => {
     setSelectedTest(null);
+    setSelectedCategory(null);
     setShowCSVUploader(true);
   };
 
@@ -103,12 +111,9 @@ export default function Home() {
     return bloodTestRanges.find((test) => test.test === testName);
   };
 
-  const toggleCategory = (category: string) => {
-    if (expandedCategories.includes(category)) {
-      setExpandedCategories(expandedCategories.filter((c) => c !== category));
-    } else {
-      setExpandedCategories([...expandedCategories, category]);
-    }
+  const getTestsInCategory = (category: string) => {
+    const cat = testCategories.find((c) => c.category === category);
+    return cat ? cat.tests : [];
   };
 
   return (
@@ -127,7 +132,7 @@ export default function Home() {
                 key={category.category}
               >
                 <AccordionItem value={category.category}>
-                  <AccordionTrigger>
+                  <AccordionTrigger onClick={() => handleCategorySelect(category.category)}>
                     {category.category}
                   </AccordionTrigger>
                   <AccordionContent className="pl-4">
@@ -185,6 +190,17 @@ export default function Home() {
             testRange={getTestRange(selectedTest)}
             csvData={csvData}
           />
+        ) : selectedCategory ? (
+          <div className="flex flex-col gap-4 w-full">
+            {getTestsInCategory(selectedCategory).map((test) => (
+              <BloodTestGraph
+                key={test}
+                testName={test}
+                testRange={getTestRange(test)}
+                csvData={csvData}
+              />
+            ))}
+          </div>
         ) : (
           <Card className="w-full">
             <CardContent className="flex h-full items-center justify-center">
