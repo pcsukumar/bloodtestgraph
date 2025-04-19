@@ -167,9 +167,10 @@ export default function Home() {
         </SidebarHeader>
         <SidebarContent>
           <ScrollArea>
-          <SidebarGroup>
+          
+            <SidebarGroup>
               <SidebarMenuItem>
-                <SidebarMenuButton onClick={handleDataManagementClick} variant="ghost" className="font-fontMenu text-base text-foreground">
+                <SidebarMenuButton onClick={handleDataManagementClick} variant="ghost" className="font-fontMenu text-base text-foreground font-semibold">
                   Data Management
                 </SidebarMenuButton>
               </SidebarMenuItem>
@@ -192,7 +193,7 @@ export default function Home() {
                           <SidebarMenuButton
                             onClick={() => handleTestSelect(test)}
                             variant="ghost"
-                            className="font-fontMenu text-base text-foreground"
+                            className="font-fontMenu text-base text-foreground font-semibold"
                           >
                             {test}
                           </SidebarMenuButton>
