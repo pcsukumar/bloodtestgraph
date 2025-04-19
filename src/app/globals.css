@@ -92,9 +92,13 @@ body {
 }
 
 .sidebar-menu-item {
-  font-family: 'Roboto Condensed', sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 0.9rem;
   letter-spacing: 0.025em;
+  white-space: nowrap; /* Prevent text from wrapping */
+  overflow: hidden;      /* Hide overflowing text */
+  text-overflow: ellipsis; /* Add ellipsis to truncated text */
 }
+
 
