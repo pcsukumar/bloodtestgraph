@@ -166,7 +166,7 @@ export default function Home() {
         </SidebarFooter>
       </Sidebar>
 
-      <SidebarContent className="ml-[16rem] flex flex-col">
+      <SidebarContent className="flex flex-col">
         {showCSVUploader ? (
           <Card className="w-full">
             <CardHeader>
