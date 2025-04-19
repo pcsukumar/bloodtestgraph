@@ -137,6 +137,7 @@ export default function Home() {
                         <SidebarMenuItem key={test}>
                           <SidebarMenuButton
                             onClick={() => handleTestSelect(test)}
+                            variant="ghost"
                           >
                             {test}
                           </SidebarMenuButton>
@@ -150,7 +151,7 @@ export default function Home() {
             <SidebarSeparator />
             <SidebarGroup>
               <SidebarMenuItem>
-                <SidebarMenuButton onClick={handleDataManagementClick}>
+                <SidebarMenuButton onClick={handleDataManagementClick} variant="ghost">
                   <Upload className="mr-2 h-4 w-4" />
                   Data Management
                 </SidebarMenuButton>
