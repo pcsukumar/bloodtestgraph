@@ -103,11 +103,34 @@ const CSVUploader: React.FC<CSVUploaderProps> = ({ onDataUpdate }) => {
             reject(new Error(`Invalid number format in Result column.`));
             return;
           }
-          results.push({
-            Test: row.Test,
-            Date: row.Date,
-            Result: parsedResult,
-          });
+
+          // Parse date in DD/MM/YYYY format
+          const dateParts = row.Date.split("/");
+          if (dateParts.length === 3) {
+            const day = parseInt(dateParts[0], 10);
+            const month = parseInt(dateParts[1], 10) - 1; // Month is 0-indexed
+            const year = parseInt(dateParts[2], 10);
+            const parsedDate = new Date(year, month, day);
+
+            if (
+              isNaN(parsedDate.getTime()) ||
+              parsedDate.getDate() !== day ||
+              parsedDate.getMonth() !== month ||
+              parsedDate.getFullYear() !== year
+            ) {
+              reject(new Error(`Invalid date format in Date column.`));
+              return;
+            }
+
+            results.push({
+              Test: row.Test,
+              Date: parsedDate.toISOString(),
+              Result: parsedResult,
+            });
+          } else {
+            reject(new Error(`Invalid date format in Date column.`));
+            return;
+          }
         }
       }
       resolve(results);
