@@ -174,6 +174,14 @@ export default function Home() {
         </SidebarHeader>
         <SidebarContent>
           <ScrollArea>
+          <SidebarGroup>
+              <SidebarMenuItem>
+                <SidebarMenuButton onClick={handleDataManagementClick} variant="ghost" className="font-fontMenu text-base text-foreground">
+                  Data Management
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarGroup>
+            <SidebarSeparator />
             {testCategories.map((category) => (
               <Accordion
                 type="single"
@@ -191,7 +199,7 @@ export default function Home() {
                           <SidebarMenuButton
                             onClick={() => handleTestSelect(test)}
                             variant="ghost"
-                            className="font-semibold text-base text-foreground"
+                            className="font-fontMenu text-base text-foreground"
                           >
                             {test}
                           </SidebarMenuButton>
@@ -202,14 +210,7 @@ export default function Home() {
                 </AccordionItem>
               </Accordion>
             ))}
-            <SidebarSeparator />
-            <SidebarGroup>
-              <SidebarMenuItem>
-                <SidebarMenuButton onClick={handleDataManagementClick} variant="ghost" className="font-semibold text-base text-foreground">
-                  Data Management
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarGroup>
+           
           </ScrollArea>
         </SidebarContent>
         <SidebarFooter>
