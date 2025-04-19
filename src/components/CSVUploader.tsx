@@ -13,7 +13,7 @@ interface CSVUploaderProps {
 const CSVUploader: React.FC<CSVUploaderProps> = ({ onDataUpdate, initialData = [] }) => {
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
-    const [uploadedData, setUploadedData] = useState(initialData); // State to hold uploaded data
+  const [uploadedData, setUploadedData] = useState(initialData); // State to hold uploaded data
 
   const handleFileChange = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,10 +35,37 @@ const CSVUploader: React.FC<CSVUploaderProps> = ({ onDataUpdate, initialData = [
         const text = e.target?.result as string;
         try {
           const parsedData = await parseCSV(text);
-            // Combine initial data with newly parsed data
-            const combinedData = [...initialData, ...parsedData];
-          onDataUpdate(combinedData);
-            setUploadedData(combinedData); // Update state with combined data
+          // Combine initial data with newly parsed data
+          const combinedData: { Test: string; Date: string; Result: number }[] = [];
+          let hasDuplicates = false;
+
+          for (const newItem of parsedData) {
+            const isDuplicate = initialData.some(
+              (existingItem) =>
+                existingItem.Test === newItem.Test &&
+                existingItem.Date === newItem.Date
+            );
+
+            if (!isDuplicate) {
+              combinedData.push(newItem);
+            } else {
+              hasDuplicates = true;
+            }
+          }
+
+          if (hasDuplicates) {
+            toast({
+              title: "Warning",
+              description:
+                "Some records were not uploaded as they are duplicates of existing data.",
+              variant: "warning",
+            });
+          }
+
+          const finalData = [...initialData, ...combinedData];
+          onDataUpdate(finalData);
+          setUploadedData(finalData); // Update state with combined data
+
           toast({
             title: "Success",
             description: "CSV data uploaded and parsed successfully!",
