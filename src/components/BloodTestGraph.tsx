@@ -10,8 +10,6 @@ import {
   XAxis,
   YAxis,
   ComposedChart,
-  ReferenceArea,
-  ReferenceLine,
 } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { format } from "date-fns";
@@ -90,41 +88,6 @@ const BloodTestGraph: React.FC<BloodTestGraphProps> = ({
                 domain={["dataMin", "dataMax"]}
               />
               <Tooltip content={renderTooltipContent} />
-              {testRange?.minimum !== null && testRange?.maximum !== null && (
-                <>
-                  <ReferenceLine
-                    y={testRange.minimum}
-                    stroke="green"
-                    strokeDasharray="3 3"
-                    label={{
-                      value: `Minimum: ${testRange.minimum} ${testRange?.unit || ""}`,
-                      position: "insideBottomLeft",
-                      fill: "green",
-                    }}
-                  />
-                  <ReferenceLine
-                    y={testRange.maximum}
-                    stroke="red"
-                    strokeDasharray="3 3"
-                    label={{
-                      value: `Maximum: ${testRange.maximum} ${testRange?.unit || ""}`,
-                      position: "insideTopLeft",
-                      fill: "red",
-                    }}
-                  />
-                  <ReferenceArea
-                    y1={testRange.minimum}
-                    y2={testRange.maximum}
-                    stroke="rgba(0, 128, 128, 0.3)"
-                    strokeOpacity={0.3}
-                    label={{
-                      value: "Normal Range",
-                      position: "inside",
-                      fill: "rgba(0, 0, 0, 0.5)",
-                    }}
-                  />
-                </>
-              )}
               <Area
                 type="monotone"
                 dataKey="result"
