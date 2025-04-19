@@ -8,7 +8,6 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarHeader,
-  SidebarInput,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -172,7 +171,6 @@ export default function Home() {
       <Toaster />
       <Sidebar>
         <SidebarHeader>
-          <SidebarInput placeholder="Search..." />
         </SidebarHeader>
         <SidebarContent>
           <ScrollArea>
