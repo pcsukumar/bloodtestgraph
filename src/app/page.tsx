@@ -24,6 +24,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Toaster } from "@/components/ui/toaster";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const testCategories = [
   {
@@ -78,6 +84,7 @@ export default function Home() {
     { Test: string; Date: string; Result: number }[]
   >([]);
   const [showCSVUploader, setShowCSVUploader] = useState(false);
+  const [expandedCategories, setExpandedCategories] = useState<string[]>([]);
 
   const handleTestSelect = (test: string) => {
     setSelectedTest(test);
@@ -97,6 +104,14 @@ export default function Home() {
     return bloodTestRanges.find((test) => test.test === testName);
   };
 
+  const toggleCategory = (category: string) => {
+    if (expandedCategories.includes(category)) {
+      setExpandedCategories(expandedCategories.filter((c) => c !== category));
+    } else {
+      setExpandedCategories([...expandedCategories, category]);
+    }
+  };
+
   return (
     <SidebarProvider>
       <Toaster />
@@ -107,18 +122,30 @@ export default function Home() {
         <SidebarContent>
           <ScrollArea>
             {testCategories.map((category) => (
-              <SidebarGroup key={category.category}>
-                <SidebarGroupLabel>{category.category}</SidebarGroupLabel>
-                <SidebarMenu>
-                  {category.tests.map((test) => (
-                    <SidebarMenuItem key={test}>
-                      <SidebarMenuButton onClick={() => handleTestSelect(test)}>
-                        {test}
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                </SidebarMenu>
-              </SidebarGroup>
+              <Accordion
+                type="single"
+                collapsible
+                key={category.category}
+              >
+                <AccordionItem value={category.category}>
+                  <AccordionTrigger>
+                    {category.category}
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <SidebarMenu>
+                      {category.tests.map((test) => (
+                        <SidebarMenuItem key={test}>
+                          <SidebarMenuButton
+                            onClick={() => handleTestSelect(test)}
+                          >
+                            {test}
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      ))}
+                    </SidebarMenu>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             ))}
             <SidebarSeparator />
             <SidebarGroup>
