@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { format } from "date-fns";
 
 interface DataTableProps {
   data: { Test: string; Date: string; Result: number }[];
@@ -40,7 +41,7 @@ const DataTable: React.FC<DataTableProps> = ({ data, testRanges }) => {
             return (
               <TableRow key={index}>
                 <TableCell className="font-medium">{row.Test}</TableCell>
-                <TableCell>{row.Date}</TableCell>
+                <TableCell>{format(new Date(row.Date), "dd/MM/yyyy")}</TableCell>
                 <TableCell>{row.Result}</TableCell>
                 <TableCell>{unit}</TableCell>
                 <TableCell>{normalRange}</TableCell>
