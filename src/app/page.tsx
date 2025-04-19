@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState } from "react";
@@ -170,7 +171,7 @@ export default function Home() {
             <SidebarGroup>
               <SidebarMenu>
                 <SidebarMenuItem>
-                  <SidebarMenuButton onClick={handleDataManagementClick} variant="ghost" className="font-extrabold text-base text-foreground">
+                  <SidebarMenuButton onClick={handleDataManagementClick} variant="ghost" className="font-extrabold text-base text-foreground sidebar-menu-item">
                     Data Management
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -184,7 +185,7 @@ export default function Home() {
                 key={category.category}
               >
                 <AccordionItem value={category.category}>
-                  <AccordionTrigger onClick={() => handleCategorySelect(category.category)} className="font-extrabold">
+                  <AccordionTrigger onClick={() => handleCategorySelect(category.category)} className="font-extrabold sidebar-menu-item">
                     {category.category}
                   </AccordionTrigger>
                   <AccordionContent className="pl-4">
@@ -194,7 +195,7 @@ export default function Home() {
                           <SidebarMenuButton
                             onClick={() => handleTestSelect(test)}
                             variant="ghost"
-                            className="font-extrabold text-base text-foreground"
+                            className="font-extrabold text-base text-foreground sidebar-menu-item"
                           >
                             {test}
                           </SidebarMenuButton>
