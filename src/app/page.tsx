@@ -105,10 +105,6 @@ export default function Home() {
     setCsvData(data);
   };
 
-  const getTestRange = (testName: string) => {
-    return bloodTestRanges.find((test) => test.test === testName);
-  };
-
   const getTestsInCategory = (category: string) => {
     const cat = testCategories.find((c) => c.category === category);
     return cat ? cat.tests : [];
@@ -133,7 +129,6 @@ export default function Home() {
       return (
         <BloodTestGraph
           testName={selectedTest}
-          testRange={getTestRange(selectedTest)}
           csvData={csvData}
         />
       );
@@ -145,7 +140,6 @@ export default function Home() {
             <BloodTestGraph
               key={test}
               testName={test}
-              testRange={getTestRange(test)}
               csvData={csvData}
             />
           ))}
@@ -225,4 +219,5 @@ export default function Home() {
     </SidebarProvider>
   );
 }
+
 

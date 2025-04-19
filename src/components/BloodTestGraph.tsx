@@ -16,27 +16,13 @@ import { format } from "date-fns";
 
 interface BloodTestGraphProps {
   testName: string;
-  testRange: any;
   csvData: { Test: string; Date: string; Result: number }[];
 }
 
 const BloodTestGraph: React.FC<BloodTestGraphProps> = ({
   testName,
-  testRange,
   csvData,
 }) => {
-  if (!testRange) {
-    return (
-      <Card className="w-full">
-        <CardContent className="flex h-full items-center justify-center">
-          <p className="text-lg text-muted-foreground">
-            Normal range not defined for {testName}.
-          </p>
-        </CardContent>
-      </Card>
-    );
-  }
-
   const testData = csvData.filter((item) => item.Test === testName);
 
   const data = testData.map((item) => ({
@@ -52,12 +38,7 @@ const BloodTestGraph: React.FC<BloodTestGraphProps> = ({
         <div className="bg-background border rounded-md p-2 shadow-md">
           <p className="font-bold">{testName}</p>
           <p>{`Date: ${format(new Date(data.date), "dd/MM/yyyy")}`}</p>
-          <p>{`Result: ${data.result} ${testRange?.unit || ""}`}</p>
-          <p>
-            {`Normal Range: ${testRange?.minimum || "N/A"} - ${
-              testRange?.maximum || "N/A"
-            } ${testRange?.unit || ""}`}
-          </p>
+          <p>{`Result: ${data.result}`}</p>
         </div>
       );
     }

@@ -27,16 +27,12 @@ const DataTable: React.FC<DataTableProps> = ({ data, testRanges }) => {
             <TableHead>Date</TableHead>
             <TableHead>Result</TableHead>
             <TableHead>Unit</TableHead>
-            <TableHead>Normal Range</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {data.map((row, index) => {
             const testRange = testRanges.find((range) => range.test === row.Test);
             const unit = testRange ? testRange.unit : "N/A";
-            const normalRange = testRange
-              ? `${testRange.minimum} - ${testRange.maximum}`
-              : "N/A";
 
             return (
               <TableRow key={index}>
@@ -44,7 +40,6 @@ const DataTable: React.FC<DataTableProps> = ({ data, testRanges }) => {
                 <TableCell>{format(new Date(row.Date), "dd/MM/yyyy")}</TableCell>
                 <TableCell>{row.Result}</TableCell>
                 <TableCell>{unit}</TableCell>
-                <TableCell>{normalRange}</TableCell>
               </TableRow>
             );
           })}
